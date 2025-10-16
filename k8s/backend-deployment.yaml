@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: backend  # nome do deployment no cluster
 spec:
-  replicas: 1
+  replicas: 1  # define 1 pod
   selector:
     matchLabels:
-      app: backend
+      app: backend  # associa este deployment aos pods com label "app: backend"
   template:
     metadata:
       labels:
-        app: backend
+        app: backend  # label aplicada aos pods criados por este deployment
     spec:
       containers:
         - name: backend
-          image: lucashnrq/backend:v1 
+          image: lucashnrq/backend:v1  # imagem do backend, publicada no Docker Hub
           ports:
-            - containerPort: 3001
+            - containerPort: 3001  # porta que o container expõe internamente no pod
           env:
             - name: DB_URL
-              value: "mongodb://db:27017/vidly"
-          command: ["./docker-entrypoint.sh"]
+              value: "mongodb://db:27017/vidly"  # variável de ambiente para conectar com o MongoDB
+          command: ["./docker-entrypoint.sh"]  # script de inicialização do backend
+

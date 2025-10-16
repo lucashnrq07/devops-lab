@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db
+  name: db  # nome do deployment no cluster
 spec:
-  replicas: 1
+  replicas: 1  # mantém 1 pod do MongoDB rodando
   selector:
     matchLabels:
-      app: db
+      app: db  # associa este deployment aos pods com label "app: db"
   template:
     metadata:
       labels:
-        app: db
+        app: db  # label aplicada aos pods criados por este deployment
     spec:
       containers:
         - name: db
-          image: mongo:4.0-xenial
+          image: mongo:4.0-xenial  # imagem oficial do MongoDB
           ports:
-            - containerPort: 27017
+            - containerPort: 27017  # porta interna do MongoDB
           volumeMounts:
             - name: db-data
-              mountPath: /data/db
+              mountPath: /data/db  # pasta do MongoDB onde os dados serão armazenados
       volumes:
         - name: db-data
-          emptyDir: {}
+          emptyDir: {}  # volume temporário para persistência enquanto o pod estiver vivo

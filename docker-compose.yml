@@ -1,32 +1,30 @@
 version: "3.8"
 
-
 services:
 
   frontend:
     depends_on:
-      - backend
+      - backend  # garante que o backend esteja iniciado antes do frontend
     build: ./frontend
     ports: 
-      - 3000:3000
+      - 3000:3000  
 
   backend:
     depends_on:
-      - db
+      - db  # garante que o MongoDB esteja iniciado antes do backend
     build: ./backend
     ports:
       - 3001:3001
     environment: 
-      DB_URL: mongodb://db/vidly
-    command: ./docker-entrypoint.sh
+      DB_URL: mongodb://db/vidly  # string de conexão do backend com o container db
+    command: ./docker-entrypoint.sh  # script de inicialização do backend
 
   db:
     image: mongo:4.0-xenial 
     ports:
       - 27017:27017 
     volumes:
-      - vidly:/data/db
-
+      - vidly:/data/db  # volume persistente para o banco de dados
 
 volumes:
-  vidly: 
+  vidly:
