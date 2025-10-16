@@ -1,22 +1,43 @@
-# 🐳 Projeto DevOps - Etapa Docker
+# 🧩 Projeto DevOps - Etapa Kubernetes
 
 ## 📘 Descrição
-Este repositório faz parte de um projeto completo de estudos em DevOps.
-Nesta primeira etapa, o foco está na **containerização de uma aplicação full stack (frontend + backend + MongoDB)** usando **Docker** e **Docker Compose**.
 
-## 🚀 Como executar
+Aplicação **full stack (frontend + backend + MongoDB)** containerizada, evoluindo de **Docker Compose** para **Kubernetes** (Minikube).
+
+## 🐳 Etapa Docker
+
 ```bash
 docker-compose up --build
+```
 
-A aplicação estará disponível em:
-     → http://localhost:3000
+A aplicação ficará disponível em `http://localhost:3000`.
 
-🔜 Próximos passos
+## ☸️ Etapa Kubernetes
 
-O projeto evoluirá com:
+1. Iniciar o cluster:
 
-    Kubernetes
-    Terraform
-    Ansible
-    CI/CD
-    Monitoramento e Observabilidade
+```bash
+minikube start
+```
+
+2. Aplicar os manifests:
+
+```bash
+kubectl apply -f k8s/
+```
+
+3. Verificar pods:
+
+```bash
+kubectl get pods
+```
+
+4. Acessar frontend:
+
+```bash
+minikube service frontend
+```
+
+## 🔜 Próximos passos
+
+Terraform, Ansible, CI/CD e Monitoramento.
