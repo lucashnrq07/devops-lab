@@ -1,25 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db  # nome do deployment no cluster
+  name: db
 spec:
-  replicas: 1  # mantém 1 pod do MongoDB rodando
+  replicas: 1
   selector:
     matchLabels:
-      app: db  # associa este deployment aos pods com label "app: db"
+      app: db
   template:
     metadata:
       labels:
-        app: db  # label aplicada aos pods criados por este deployment
+        app: db
     spec:
       containers:
         - name: db
-          image: mongo:4.0-xenial  # imagem oficial do MongoDB
+          image: mongo:4.0-xenial # imagem oficial do MongoDB
           ports:
-            - containerPort: 27017  # porta interna do MongoDB
+            - containerPort: 27017 # porta padrão do MongoDB
           volumeMounts:
-            - name: db-data
-              mountPath: /data/db  # pasta do MongoDB onde os dados serão armazenados
+            - name: mongo-data 
+              mountPath: /data/db  # caminho dentro do container onde os dados são salvos
       volumes:
-        - name: db-data
-          emptyDir: {}  # volume temporário para persistência enquanto o pod estiver vivo
+        - name: mongo-data # volume a ser montado no container
+          persistentVolumeClaim: # Ligação com o PVC (PersistentVolumeClaim)
+            claimName: mongo-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce # o volume pode ser montado em um nó por vez (modo padrão para MongoDB)
+  resources:
+    requests:
+      storage: 1Gi

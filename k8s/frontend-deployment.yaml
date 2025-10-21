@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend 
 spec:
   replicas: 1
   selector:
@@ -18,5 +18,8 @@ spec:
           ports:
             - containerPort: 3000
           env:
+            # variável de ambiente passada para o React no build
+            # como o React roda no navegador do usuário, ele precisa
+            # do IP e porta pública (NodePort) do backend.
             - name: REACT_APP_API_URL
-              value: "http://backend:3001"   
+              value: "http://192.168.49.2:30011/api" # backend exposto pelo NodePort

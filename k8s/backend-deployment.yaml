@@ -12,6 +12,22 @@ spec:
       labels:
         app: backend  # label aplicada aos pods criados por este deployment
     spec:
+
+      # initContainer: executa ANTES do container principal
+      # serve para garantir que o MongoDB está aceitando conexões
+      initContainers:
+        - name: wait-for-db
+          image: busybox  # imagem leve usada só para rodar comandos shell
+          command:
+            - sh
+            - -c
+            - |
+              echo "⏳ Esperando o MongoDB iniciar..."
+              until nc -z db 27017; do
+                echo "Aguardando MongoDB..."
+                sleep 2
+              done
+              echo "✅ MongoDB está pronto!"
       containers:
         - name: backend
           image: lucashnrq/backend:v1  # imagem do backend, publicada no Docker Hub
@@ -21,4 +37,3 @@ spec:
             - name: DB_URL
               value: "mongodb://db:27017/vidly"  # variável de ambiente para conectar com o MongoDB
           command: ["./docker-entrypoint.sh"]  # script de inicialização do backend
-
